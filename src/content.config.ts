@@ -20,6 +20,8 @@ const projects = defineCollection({
     repo: z.string().url().optional(),
     featured: z.boolean().default(false),
     cover: z.string().optional(),
+    // 横竖屏：portrait = 竖屏（手机框居中），landscape = 横屏（铺满）
+    orientation: z.enum(["portrait", "landscape"]).default("landscape"),
   }),
 });
 
