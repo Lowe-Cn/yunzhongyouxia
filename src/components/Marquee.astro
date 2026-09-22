@@ -1,0 +1,22 @@
+---
+interface Props {
+  items?: string[];
+}
+
+const { items = ["Playable Ads", "Cocos Creator", "H5 Games", "Warm Tech", "Indie Craft", "Ship Fast"] } =
+  Astro.props;
+const loop = [...items, ...items];
+---
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    {
+      loop.map((item) => (
+        <span class="marquee-item">
+          <span class="marquee-dot" />
+          {item}
+        </span>
+      ))
+    }
+  </div>
+</div>

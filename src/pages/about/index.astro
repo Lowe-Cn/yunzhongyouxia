@@ -1,0 +1,84 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { site } from "../../data/site";
+---
+
+<Layout title="关于" description={site.bio}>
+  <section class="relative overflow-hidden">
+    <div class="pointer-events-none absolute right-0 top-10 h-72 w-72 rounded-full bg-accent/15 blur-3xl"></div>
+
+    <div class="mx-auto max-w-4xl px-5 py-14 sm:px-8 sm:py-20">
+      <p class="section-kicker" data-reveal>About</p>
+      <h1
+        class="mt-3 font-display text-4xl font-bold tracking-tight text-ink sm:text-6xl"
+        data-reveal
+        style="--reveal-delay: 60ms"
+      >
+        关于 {site.author}
+      </h1>
+      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-muted" data-reveal style="--reveal-delay: 120ms">
+        {site.bio}
+      </p>
+
+      <div class="mt-12 grid gap-4 sm:grid-cols-2" data-reveal style="--reveal-delay: 180ms">
+        <div class="about-tile">
+          <p class="font-mono text-[11px] tracking-[0.16em] text-accent uppercase">Playable</p>
+          <h2 class="mt-2 font-display text-xl font-semibold text-ink">试玩广告</h2>
+          <p class="mt-2 text-sm leading-relaxed text-muted">网页里能直接玩的广告小游戏，这一类已经接入。</p>
+        </div>
+        <div class="about-tile">
+          <p class="font-mono text-[11px] tracking-[0.16em] text-accent uppercase">Original</p>
+          <h2 class="mt-2 font-display text-xl font-semibold text-ink">原创游戏</h2>
+          <p class="mt-2 text-sm leading-relaxed text-muted">更完整的游戏作品，会慢慢补上。</p>
+        </div>
+        <div class="about-tile">
+          <p class="font-mono text-[11px] tracking-[0.16em] text-accent uppercase">Projects</p>
+          <h2 class="mt-2 font-display text-xl font-semibold text-ink">其他项目</h2>
+          <p class="mt-2 text-sm leading-relaxed text-muted">工具、网站、实验性小东西。</p>
+        </div>
+        <div class="about-tile">
+          <p class="font-mono text-[11px] tracking-[0.16em] text-accent uppercase">Notes</p>
+          <h2 class="mt-2 font-display text-xl font-semibold text-ink">想法笔记</h2>
+          <p class="mt-2 text-sm leading-relaxed text-muted">做游戏路上的思考与记录。</p>
+        </div>
+      </div>
+
+      <div
+        class="mt-10 rounded-[1.4rem] border border-line/70 bg-surface/80 p-6 sm:p-8"
+        data-reveal
+        style="--reveal-delay: 240ms"
+      >
+        <h2 class="font-display text-lg font-semibold text-ink">想联系我？</h2>
+        <p class="mt-2 text-sm text-muted">把联系方式写在 `src/data/site.ts` 里，这里就会自动出现。</p>
+        <div class="mt-5 flex flex-wrap gap-3">
+          {
+            site.social.github && (
+              <a href={site.social.github} target="_blank" rel="noreferrer" class="btn-ghost px-4 py-2 text-sm">
+                GitHub
+              </a>
+            )
+          }
+          {
+            site.social.bilibili && (
+              <a href={site.social.bilibili} target="_blank" rel="noreferrer" class="btn-ghost px-4 py-2 text-sm">
+                哔哩哔哩
+              </a>
+            )
+          }
+          {
+            site.email && (
+              <a href={`mailto:${site.email}`} class="btn-primary px-4 py-2 text-sm">
+                发邮件
+              </a>
+            )
+          }
+          {
+            !site.email && !site.social.bilibili && (
+              <span class="text-sm text-muted">邮箱 / 社交链接还没填，先去 site.ts 补上吧。</span>
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

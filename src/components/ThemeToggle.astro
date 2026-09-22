@@ -1,0 +1,60 @@
+---
+/**
+ * 日夜模式切换按钮
+ * 偏好存在 localStorage.theme：light | dark
+ */
+---
+
+<button
+  type="button"
+  class="theme-toggle"
+  data-theme-toggle
+  aria-label="切换夜间模式"
+  title="切换日夜模式"
+>
+  <!-- 太阳：日间显示，点了切夜间 -->
+  <svg class="icon-sun" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"></circle>
+    <path
+      d="M12 2.5v2.2M12 19.3v2.2M4.7 4.7l1.6 1.6M17.7 17.7l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.7 19.3l1.6-1.6M17.7 6.3l1.6-1.6"
+      stroke="currentColor"
+      stroke-width="1.8"
+      stroke-linecap="round"></path>
+  </svg>
+  <!-- 月亮：夜间显示，点了切日间 -->
+  <svg class="icon-moon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path
+      d="M20 13.5A8.5 8.5 0 1 1 10.5 4 7 7 0 0 0 20 13.5Z"
+      stroke="currentColor"
+      stroke-width="1.8"
+      stroke-linejoin="round"></path>
+  </svg>
+</button>
+
+<script>
+  function currentTheme() {
+    return document.documentElement.classList.contains("dark") ? "dark" : "light";
+  }
+
+  function applyTheme(theme) {
+    const root = document.documentElement;
+    root.classList.toggle("dark", theme === "dark");
+    localStorage.setItem("theme", theme);
+    const btn = document.querySelector("[data-theme-toggle]");
+    if (btn) {
+      btn.setAttribute("aria-label", theme === "dark" ? "切换到日间模式" : "切换到夜间模式");
+    }
+  }
+
+  function initThemeToggle() {
+    const btn = document.querySelector("[data-theme-toggle]");
+    if (!btn || btn.dataset.bound === "1") return;
+    btn.dataset.bound = "1";
+    btn.addEventListener("click", () => {
+      applyTheme(currentTheme() === "dark" ? "light" : "dark");
+    });
+  }
+
+  initThemeToggle();
+  document.addEventListener("astro:page-load", initThemeToggle);
+</script>

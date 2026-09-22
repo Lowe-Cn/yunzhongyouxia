@@ -1,0 +1,65 @@
+---
+/** 滚动显现 + 卡片光斑跟随 */
+---
+
+<script>
+  function initReveal() {
+    const nodes = document.querySelectorAll("[data-reveal]");
+    if (!nodes.length) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      nodes.forEach((el) => el.classList.add("is-visible"));
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add("is-visible");
+          io.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
+    );
+
+    nodes.forEach((el) => io.observe(el));
+  }
+
+  function initCardSpot() {
+    const cards = document.querySelectorAll("[data-spot]");
+    cards.forEach((card) => {
+      if (card.dataset.spotBound === "1") return;
+      card.dataset.spotBound = "1";
+      card.addEventListener("pointermove", (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        card.style.setProperty("--spot-x", `${x}%`);
+        card.style.setProperty("--spot-y", `${y}%`);
+      });
+    });
+  }
+
+  function initHeroParallax() {
+    const hero = document.querySelector("[data-hero-media]");
+    if (!hero || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const onScroll = () => {
+      const y = Math.min(window.scrollY, 520);
+      hero.style.transform = `scale(1.08) translate3d(0, ${y * 0.18}px, 0)`;
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
+
+  function boot() {
+    initReveal();
+    initCardSpot();
+    initHeroParallax();
+  }
+
+  boot();
+  document.addEventListener("astro:page-load", boot);
+</script>

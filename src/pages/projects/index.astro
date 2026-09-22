@@ -1,0 +1,179 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import Card from "../../components/Card.astro";
+import { getWorkLabel } from "../../data/labels";
+
+const projects = (await getCollection("projects")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+
+const playableAds = projects.filter(
+  (p) => p.data.type === "game" && p.data.category === "playable-ad",
+);
+const originalGames = projects.filter(
+  (p) => p.data.type === "game" && p.data.category === "original",
+);
+const otherGames = projects.filter(
+  (p) => p.data.type === "game" && (!p.data.category || p.data.category === "other"),
+);
+const others = projects.filter((p) => p.data.type === "project");
+
+const sections = [
+  {
+    key: "playable-ad",
+    title: "试玩广告",
+    desc: "可在网页里直接玩的广告试玩。目前先用「砍树造房子」占位联调。",
+    items: playableAds,
+  },
+  {
+    key: "original",
+    title: "原创游戏",
+    desc: "完整一点的游戏作品。这一栏以后再慢慢加。",
+    items: originalGames,
+  },
+  {
+    key: "other-game",
+    title: "其他游戏",
+    desc: "不好归类时可以先放这里。",
+    items: otherGames,
+  },
+  {
+    key: "project",
+    title: "项目",
+    desc: "网站、工具和其他非游戏作品。",
+    items: others,
+  },
+].filter((section) => section.items.length > 0 || section.key === "original");
+
+const filters = [
+  { key: "all", label: "全部", count: projects.length },
+  { key: "playable-ad", label: "试玩广告", count: playableAds.length },
+  { key: "original", label: "原创游戏", count: originalGames.length },
+  { key: "project", label: "项目", count: others.length },
+].filter((f) => f.key === "all" || f.count > 0 || f.key === "original");
+---
+
+<Layout title="作品" description="试玩广告、游戏和项目">
+  <section class="relative overflow-hidden border-b border-line/50">
+    <div class="pointer-events-none absolute -right-20 top-0 h-64 w-64 rounded-full bg-accent/15 blur-3xl"></div>
+    <div class="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
+      <p class="section-kicker" data-reveal>Works</p>
+      <h1
+        class="mt-3 font-display text-4xl font-bold tracking-tight text-ink sm:text-6xl"
+        data-reveal
+        style="--reveal-delay: 60ms"
+      >
+        作品
+      </h1>
+      <p class="mt-4 max-w-2xl text-muted" data-reveal style="--reveal-delay: 120ms">
+        游戏不止一种。现在先接好了<strong class="font-medium text-ink">试玩广告</strong>；原创游戏和其他项目会陆续补上。
+      </p>
+
+      <div class="mt-8 flex flex-wrap items-center gap-2" data-reveal style="--reveal-delay: 180ms" data-filter-bar>
+        <input
+          type="search"
+          placeholder="搜索标题 / 标签…"
+          data-search
+          class="mr-2 w-full max-w-xs rounded-full border border-line bg-surface px-4 py-2 text-sm text-ink outline-none placeholder:text-muted focus:border-accent"
+        />
+        {
+          filters.map((f) => (
+            <button
+              type="button"
+              class="filter-chip"
+              data-filter={f.key}
+              aria-pressed={f.key === "all" ? "true" : "false"}
+            >
+              {f.label}
+              <span class="filter-count">{f.count}</span>
+            </button>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
+    {
+      sections.map((section) => (
+        <div class="work-section mt-4 first:mt-0" data-section={section.key}>
+          <div class="mb-6" data-reveal>
+            <h2 class="font-display text-2xl font-semibold text-ink sm:text-3xl">{section.title}</h2>
+            <p class="mt-1 text-sm text-muted">{section.desc}</p>
+          </div>
+
+          {section.items.length > 0 ? (
+            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {section.items.map((item, i) => (
+                <div data-reveal style={`--reveal-delay: ${(i % 6) * 70}ms`}>
+                  <Card
+                    title={item.data.title}
+                    summary={item.data.summary}
+                    href={`/projects/${item.id}/`}
+                    label={getWorkLabel({ type: item.data.type, category: item.data.category })}
+                    tags={item.data.tags}
+                    date={item.data.date}
+                    cover={item.data.cover}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div
+              class="rounded-2xl border border-dashed border-line bg-surface/50 px-5 py-8 text-sm text-muted"
+              data-reveal
+            >
+              还没有内容。以后有了原创游戏，在
+              <code class="mx-1 rounded bg-surface-2 px-1.5 py-0.5 font-mono text-xs">src/content/projects/</code>
+              新建 Markdown，并设置
+              <code class="mx-1 rounded bg-surface-2 px-1.5 py-0.5 font-mono text-xs">category: original</code>
+              就会出现在这里。
+            </div>
+          )}
+        </div>
+      ))
+    }
+  </section>
+</Layout>
+
+<script>
+  function initFilters() {
+    const bar = document.querySelector("[data-filter-bar]");
+    if (!bar || bar.dataset.bound === "1") return;
+    bar.dataset.bound = "1";
+
+    const chips = bar.querySelectorAll("[data-filter]");
+    const search = bar.querySelector("[data-search]");
+    const sections = document.querySelectorAll("[data-section]");
+    let activeKey = "all";
+
+    function apply() {
+      const q = (search?.value || "").trim().toLowerCase();
+      sections.forEach((section) => {
+        const sectionKey = section.getAttribute("data-section");
+        const matchFilter = activeKey === "all" || activeKey === sectionKey || (activeKey === "project" && sectionKey === "other-game");
+        let visibleCount = 0;
+        section.querySelectorAll(".work-card").forEach((card) => {
+          const text = (card.textContent || "").toLowerCase();
+          const matchQ = !q || text.includes(q);
+          card.parentElement.style.display = matchQ ? "" : "none";
+          if (matchQ) visibleCount++;
+        });
+        section.classList.toggle("is-hidden", !matchFilter || visibleCount === 0);
+      });
+    }
+
+    chips.forEach((chip) => {
+      chip.addEventListener("click", () => {
+        activeKey = chip.getAttribute("data-filter") || "all";
+        chips.forEach((c) => c.setAttribute("aria-pressed", c === chip ? "true" : "false"));
+        apply();
+      });
+    });
+    search?.addEventListener("input", apply);
+  }
+
+  initFilters();
+  document.addEventListener("astro:page-load", initFilters);
+</script>

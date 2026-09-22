@@ -1,0 +1,103 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { getWorkLabel } from "../../data/labels";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+const { title, summary, type, category, date, tags, demo, repo, play, cover } = project.data;
+const typeLabel = getWorkLabel({ type, category });
+const canPlay = Boolean(play || demo);
+const playHref = `/play/${project.id}/`;
+---
+
+<Layout title={title} description={summary}>
+  <article class="mx-auto max-w-4xl px-5 py-10 sm:px-8 sm:py-14">
+    <a href="/projects/" class="text-sm text-muted transition hover:text-accent">← 返回作品</a>
+
+    {
+      cover && (
+        <div class="relative mt-6 overflow-hidden rounded-[1.6rem] border border-line/70 shadow-[0_30px_70px_-40px_rgba(23,33,38,0.55)]">
+          <img src={cover} alt="" class="aspect-[16/9] w-full object-cover" />
+          <div class="absolute inset-0 bg-gradient-to-t from-ink/50 via-transparent to-transparent" />
+          <span class="absolute left-4 top-4 rounded-full bg-surface/90 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-accent backdrop-blur-sm">
+            {typeLabel}
+          </span>
+        </div>
+      )
+    }
+
+    {
+      !cover && (
+        <p class="mt-6 font-mono text-xs uppercase tracking-wider text-accent">{typeLabel}</p>
+      )
+    }
+    <h1 class:list={["font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl", cover ? "mt-8" : "mt-2"]}>
+      {title}
+    </h1>
+    <p class="mt-4 text-lg leading-relaxed text-muted">{summary}</p>
+
+    <div class="mt-5 flex flex-wrap items-center gap-3 text-sm">
+      <time class="font-mono text-xs text-muted" datetime={date.toISOString()}>
+        {date.toISOString().slice(0, 10)}
+      </time>
+      {
+        tags.map((tag) => (
+          <span class="rounded-full bg-surface-2 px-2.5 py-0.5 font-mono text-[11px] text-muted">{tag}</span>
+        ))
+      }
+    </div>
+
+    {
+      (canPlay || repo) && (
+        <div class="mt-7 flex flex-wrap gap-3">
+          {canPlay && (
+            <a href={playHref} class="btn-primary px-5 py-2.5 text-sm">
+              开始游玩
+            </a>
+          )}
+          {repo && (
+            <a href={repo} target="_blank" rel="noreferrer" class="btn-ghost px-5 py-2.5 text-sm">
+              查看源码
+            </a>
+          )}
+        </div>
+      )
+    }
+
+    {
+      play && (
+        <div class="mt-10 overflow-hidden rounded-[1.4rem] border border-line/80 bg-[#172126] shadow-[0_24px_60px_-34px_rgba(12,111,102,0.55)]">
+          <div class="flex items-center justify-between gap-3 border-b border-white/10 px-4 py-2.5">
+            <span class="font-mono text-[11px] uppercase tracking-wider text-[#8fd4c6]">Live preview</span>
+            <a href={playHref} class="text-xs text-white/70 transition hover:text-white">
+              全屏试玩 →
+            </a>
+          </div>
+          <iframe
+            src={play}
+            title={`${title} 试玩`}
+            class="aspect-[16/10] w-full bg-black"
+            loading="lazy"
+            allow="fullscreen; autoplay; gamepad"
+            allowfullscreen
+          />
+        </div>
+      )
+    }
+
+    <div
+      class="mt-10 space-y-4 text-[15px] leading-7 text-ink [&_a]:text-accent [&_a]:underline [&_h2]:mt-8 [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-semibold [&_li]:ml-5 [&_li]:list-disc [&_p]:text-muted [&_strong]:text-ink [&_ul]:space-y-1"
+    >
+      <Content />
+    </div>
+  </article>
+</Layout>

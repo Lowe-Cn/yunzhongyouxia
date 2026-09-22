@@ -1,0 +1,54 @@
+---
+import { site } from "../data/site";
+import ThemeToggle from "./ThemeToggle.astro";
+
+const pathname = Astro.url.pathname;
+const links = [
+  { href: "/", label: "首页" },
+  { href: "/projects/", label: "作品" },
+  { href: "/ideas/", label: "想法" },
+  { href: "/about/", label: "关于" },
+];
+
+function isActive(href: string) {
+  if (href === "/") return pathname === "/";
+  return pathname.startsWith(href);
+}
+---
+
+<header class="sticky top-0 z-50">
+  <div class="mx-auto max-w-6xl px-5 pt-4 sm:px-8">
+    <div
+      class="flex items-center justify-between gap-4 rounded-2xl border border-line/60 bg-surface/70 px-4 py-3 shadow-[0_10px_40px_-28px_var(--header-shadow)] backdrop-blur-xl sm:px-5"
+    >
+      <a href="/" class="group flex items-center gap-3">
+        <span
+          class="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-accent to-accent-2 font-display text-sm font-bold text-[#fff9f1] shadow-[0_0_0_4px_var(--accent-soft)] transition duration-300 group-hover:scale-105"
+          aria-hidden="true"
+        >
+          {site.name.slice(0, 1)}
+        </span>
+        <span class="font-display text-base font-semibold tracking-tight text-ink">{site.name}</span>
+      </a>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <nav class="flex items-center gap-1 sm:gap-1.5" aria-label="主导航">
+          {
+            links.map((link) => (
+              <a
+                href={link.href}
+                class:list={[
+                  "rounded-full px-2.5 py-1.5 text-sm font-medium transition sm:px-3",
+                  isActive(link.href) ? "nav-link-active" : "nav-link",
+                ]}
+              >
+                {link.label}
+              </a>
+            ))
+          }
+        </nav>
+        <ThemeToggle />
+      </div>
+    </div>
+  </div>
+</header>

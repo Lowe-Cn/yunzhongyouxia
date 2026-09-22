@@ -1,0 +1,90 @@
+---
+import { getCollection } from "astro:content";
+import { site } from "../../data/site";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects
+    .filter((project) => project.data.play || project.data.demo)
+    .map((project) => ({
+      params: { slug: project.id },
+      props: { project },
+    }));
+}
+
+const { project } = Astro.props;
+const { title, play, demo } = project.data;
+const src = play ?? demo!;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>试玩 · {title} · {site.name}</title>
+    <style>
+      :root {
+        color-scheme: light;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #1e2a2f;
+        font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+      }
+      .bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 10px 14px;
+        background: color-mix(in oklab, #1e2a2f 82%, transparent);
+        backdrop-filter: blur(10px);
+        color: #fffaf2;
+      }
+      .bar a {
+        color: #7ec8bc;
+        text-decoration: none;
+        font-size: 13px;
+      }
+      .bar a:hover {
+        text-decoration: underline;
+      }
+      .title {
+        font-size: 13px;
+        opacity: 0.9;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      iframe {
+        position: absolute;
+        inset: 52px 0 0 0;
+        width: 100%;
+        height: calc(100% - 52px);
+        border: 0;
+        background: #000;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bar">
+      <a href={`/projects/${project.id}/`}>← 返回介绍</a>
+      <div class="title">{title}</div>
+      <a href={src} target="_blank" rel="noreferrer">新窗口打开</a>
+    </div>
+    <iframe src={src} title={title} allow="fullscreen; autoplay; gamepad" allowfullscreen></iframe>
+  </body>
+</html>

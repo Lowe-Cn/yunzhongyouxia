@@ -1,0 +1,40 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+export async function getStaticPaths() {
+  const ideas = await getCollection("ideas");
+  return ideas.map((idea) => ({
+    params: { slug: idea.id },
+    props: { idea },
+  }));
+}
+
+const { idea } = Astro.props;
+const { Content } = await render(idea);
+const { title, summary, date, tags } = idea.data;
+---
+
+<Layout title={title} description={summary}>
+  <article class="mx-auto max-w-3xl px-5 py-12 sm:px-8 sm:py-16">
+    <a href="/ideas/" class="text-sm text-muted transition hover:text-accent">← 返回想法</a>
+    <p class="mt-6 font-mono text-xs uppercase tracking-wider text-accent">想法</p>
+    <h1 class="mt-2 text-3xl font-bold tracking-tight text-ink sm:text-4xl">{title}</h1>
+    <p class="mt-4 text-lg leading-relaxed text-muted">{summary}</p>
+    <div class="mt-5 flex flex-wrap items-center gap-3 text-sm">
+      <time class="font-mono text-xs text-muted" datetime={date.toISOString()}>
+        {date.toISOString().slice(0, 10)}
+      </time>
+      {
+        tags.map((tag) => (
+          <span class="rounded-md bg-bg-soft px-2 py-0.5 font-mono text-[11px] text-muted">{tag}</span>
+        ))
+      }
+    </div>
+    <div
+      class="mt-10 space-y-4 text-[15px] leading-7 [&_a]:text-accent [&_a]:underline [&_h2]:mt-8 [&_h2]:text-xl [&_h2]:font-semibold [&_li]:ml-5 [&_li]:list-disc [&_ol]:list-decimal [&_ol_li]:ml-5 [&_p]:text-muted [&_strong]:text-ink [&_ul]:space-y-1"
+    >
+      <Content />
+    </div>
+  </article>
+</Layout>
