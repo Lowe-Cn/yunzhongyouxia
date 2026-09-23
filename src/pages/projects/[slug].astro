@@ -60,8 +60,13 @@ const playHref = `/play/${project.id}/`;
       (canPlay || repo) && (
         <div class="mt-7 flex flex-wrap gap-3">
           {canPlay && (
-            <a href={playHref} class="btn-primary px-5 py-2.5 text-sm">
-              开始游玩
+            <a href={`${playHref}?mode=landscape`} class="btn-primary px-5 py-2.5 text-sm">
+              横屏游玩
+            </a>
+          )}
+          {canPlay && (
+            <a href={`${playHref}?mode=portrait`} class="btn-ghost px-5 py-2.5 text-sm">
+              竖屏游玩
             </a>
           )}
           {repo && (
@@ -69,27 +74,6 @@ const playHref = `/play/${project.id}/`;
               查看源码
             </a>
           )}
-        </div>
-      )
-    }
-
-    {
-      play && (
-        <div class="mt-10 overflow-hidden rounded-[1.4rem] border border-line/80 bg-[#172126] shadow-[0_24px_60px_-34px_rgba(12,111,102,0.55)]">
-          <div class="flex items-center justify-between gap-3 border-b border-white/10 px-4 py-2.5">
-            <span class="font-mono text-[11px] uppercase tracking-wider text-[#8fd4c6]">Live preview</span>
-            <a href={playHref} class="text-xs text-white/70 transition hover:text-white">
-              全屏试玩 →
-            </a>
-          </div>
-          <iframe
-            src={play}
-            title={`${title} 试玩`}
-            class="aspect-[16/10] w-full bg-black"
-            loading="lazy"
-            allow="fullscreen; autoplay; gamepad"
-            allowfullscreen
-          />
         </div>
       )
     }

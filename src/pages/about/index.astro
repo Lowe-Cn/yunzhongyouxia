@@ -49,8 +49,8 @@ import { site } from "../../data/site";
         style="--reveal-delay: 240ms"
       >
         <h2 class="font-display text-lg font-semibold text-ink">想联系我？</h2>
-        <p class="mt-2 text-sm text-muted">把联系方式写在 `src/data/site.ts` 里，这里就会自动出现。</p>
-        <div class="mt-5 flex flex-wrap gap-3">
+        {site.email && <p class="mt-2 text-sm text-muted">邮箱：{site.email}，点击下面按钮复制。</p>}
+        <div class="mt-5 flex flex-wrap items-center gap-3">
           {
             site.social.github && (
               <a href={site.social.github} target="_blank" rel="noreferrer" class="btn-ghost px-4 py-2 text-sm">
@@ -65,13 +65,8 @@ import { site } from "../../data/site";
               </a>
             )
           }
-          {
-            site.email && (
-              <a href={`mailto:${site.email}`} class="btn-primary px-4 py-2 text-sm">
-                发邮件
-              </a>
-            )
-          }
+          {site.email && <button type="button" data-copy-email={site.email} class="btn-primary px-4 py-2 text-sm">复制邮箱：{site.email}</button>}
+          {site.email && <span data-copy-hint class="hidden text-sm text-accent">已复制，去粘贴吧！</span>}
           {
             !site.email && !site.social.bilibili && (
               <span class="text-sm text-muted">邮箱 / 社交链接还没填，先去 site.ts 补上吧。</span>
@@ -81,4 +76,25 @@ import { site } from "../../data/site";
       </div>
     </div>
   </section>
+  {site.email && (
+    <script>
+      const btn = document.querySelector("[data-copy-email]");
+      const hint = document.querySelector("[data-copy-hint]");
+      btn?.addEventListener("click", async () => {
+        const email = btn.getAttribute("data-copy-email") ?? "";
+        try {
+          await navigator.clipboard.writeText(email);
+        } catch {
+          const ta = document.createElement("textarea");
+          ta.value = email;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          ta.remove();
+        }
+        hint?.classList.remove("hidden");
+        setTimeout(() => hint?.classList.add("hidden"), 2000);
+      });
+    </script>
+  )}
 </Layout>

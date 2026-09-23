@@ -1,0 +1,5 @@
+{"d":"2026-09-23","k":"问题修复","t":"Godot两款启动图由favicon换成各游戏封面","f":["public/games/wanguxiantu/wangu.html","public/games/yicunnuan/yicunuan.html"]}
+{"d":"2026-09-23","k":"视觉设计","t":"Logo定稿月白朱砂，全站换上","f":["public/favicon.svg","public/images/logo/logo-v6.svg","src/components/Header.astro"]}
+{"d":"2026-09-23","k":"内容更新","t":"封面补齐：desert-ice/fence-elephant/tower-defense/pig-farm-b重画","f":["public/images/covers/","src/content/projects/"]}
+{"d":"2026-09-23","k":"项目整理","t":"删孤儿资源15MB，大图转JPG省6MB，删scripts","f":["public/images/","scripts/"]}
+{"d":"2026-09-23","k":"文档更新","t":"新建AiHelper协作协议","f":["AiHelper/"]}

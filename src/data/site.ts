@@ -14,7 +14,7 @@ export const site = {
   // 浏览器标签标题后缀
   titleSuffix: "缈奕的游戏匣子",
   // 邮箱（可选，没有就先留空字符串 ""）
-  email: "",
+  email: "2810313105@qq.com",
   // 社交链接（没有的可以删掉或先留空）
   social: {
     github: "https://github.com/",

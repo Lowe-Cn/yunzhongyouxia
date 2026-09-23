@@ -7,7 +7,7 @@ date: 2026-09-22
 tags: ["试玩广告", "Cocos", "H5"]
 featured: true
 play: "/games/chop-build.html"
-cover: "/images/covers/chop-build.png"
+cover: "/images/covers/chop-build.jpg"
 ---
 
 ## 关于这款游戏

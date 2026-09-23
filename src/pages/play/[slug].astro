@@ -191,16 +191,20 @@ const defaultMode = project.data.orientation === "portrait" ? "portrait" : "land
       const stage = document.querySelector("[data-stage]");
       const seg = document.querySelector("[data-seg]");
       const tip = document.querySelector("[data-tip]");
-      seg?.addEventListener("click", (e) => {
-        const btn = e.target.closest("[data-mode-btn]");
-        if (!btn || !stage) return;
-        const mode = btn.getAttribute("data-mode-btn");
+      function applyMode(mode) {
+        if (!stage || (mode !== "portrait" && mode !== "landscape")) return;
         stage.setAttribute("data-mode", mode);
-        seg.querySelectorAll("[data-mode-btn]").forEach((b) =>
-          b.setAttribute("aria-pressed", b === btn ? "true" : "false"),
+        seg?.querySelectorAll("[data-mode-btn]").forEach((b) =>
+          b.setAttribute("aria-pressed", b.getAttribute("data-mode-btn") === mode ? "true" : "false"),
         );
         if (tip) tip.style.display = mode === "portrait" ? "" : "none";
+      }
+      seg?.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-mode-btn]");
+        if (!btn) return;
+        applyMode(btn.getAttribute("data-mode-btn"));
       });
+      applyMode(new URLSearchParams(location.search).get("mode"));
       if (stage && tip && stage.getAttribute("data-mode") !== "portrait") tip.style.display = "none";
     </script>
   </body>

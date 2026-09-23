@@ -38,7 +38,7 @@ body {
 }
 
 #status {
-	background-color: #242424;
+	background-color: #14201f;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -71,9 +71,28 @@ body {
 }
 
 #status-progress {
-	bottom: 10%;
-	width: 50%;
+	bottom: 16%;
+	width: 56%;
 	margin: 0 auto;
+	height: 8px;
+	appearance: none;
+	-webkit-appearance: none;
+	background: transparent;
+}
+
+#status-progress::-webkit-progress-bar {
+	background: rgba(255, 255, 255, .15);
+	border-radius: 99px;
+}
+
+#status-progress::-webkit-progress-value {
+	background: #7EC8BC;
+	border-radius: 99px;
+}
+
+#status-progress::-moz-progress-bar {
+	background: #7EC8BC;
+	border-radius: 99px;
 }
 
 #status-notice {
@@ -104,7 +123,7 @@ body {
 		</noscript>
 
 		<div id="status">
-			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="/favicon.svg" alt="" onerror="this.remove()">
+			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="/images/covers/wanguxiantu.jpg" alt="" onerror="this.remove()">
 			<progress id="status-progress"></progress>
 			<div id="status-notice"></div>
 		</div>

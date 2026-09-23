@@ -22,12 +22,11 @@ function isActive(href: string) {
       class="flex items-center justify-between gap-4 rounded-2xl border border-line/60 bg-surface/70 px-4 py-3 shadow-[0_10px_40px_-28px_var(--header-shadow)] backdrop-blur-xl sm:px-5"
     >
       <a href="/" class="group flex items-center gap-3">
-        <span
-          class="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-accent to-accent-2 font-display text-sm font-bold text-[#fff9f1] shadow-[0_0_0_4px_var(--accent-soft)] transition duration-300 group-hover:scale-105"
-          aria-hidden="true"
-        >
-          {site.name.slice(0, 1)}
-        </span>
+        <img
+          src="/favicon.svg"
+          alt="云中游匣"
+          class="h-9 w-9 rounded-xl shadow-[0_0_0_4px_var(--accent-soft)] transition duration-300 group-hover:scale-105"
+        />
         <span class="font-display text-base font-semibold tracking-tight text-ink">{site.name}</span>
       </a>
 

@@ -12,7 +12,7 @@ interface Props {
 const { title, summary, href, label = null, tags = [], date, cover } = Astro.props;
 ---
 
-<a href={href} class="work-card group" data-spot>
+<a href={href} class="work-card group flex h-full flex-col" data-spot>
   <div class="work-card-spot" aria-hidden="true"></div>
 
   {
@@ -50,7 +50,7 @@ const { title, summary, href, label = null, tags = [], date, cover } = Astro.pro
     )
   }
 
-  <div class="relative p-5 sm:p-6">
+  <div class="relative flex flex-1 flex-col p-5 sm:p-6">
     <div class="mb-2 flex items-center justify-between gap-3">
       {
         date && (
@@ -63,7 +63,7 @@ const { title, summary, href, label = null, tags = [], date, cover } = Astro.pro
     <h3 class="font-display text-xl font-semibold tracking-tight text-ink transition duration-300 group-hover:text-accent">
       {title}
     </h3>
-    <p class="mt-2 text-sm leading-relaxed text-muted">{summary}</p>
+    <p class="mt-2 line-clamp-2 min-h-[2.6em] text-sm leading-relaxed text-muted">{summary}</p>
     {
       tags.length > 0 && (
         <ul class="mt-4 flex flex-wrap gap-2">

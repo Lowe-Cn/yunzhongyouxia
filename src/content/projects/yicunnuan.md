@@ -7,6 +7,7 @@ date: 2026-09-22
 tags: ["Godot", "H5", "原创游戏"]
 featured: true
 play: "/games/yicunnuan/yicunuan.html"
+cover: "/images/covers/yicunnuan.jpg"
 orientation: portrait
 ---
 

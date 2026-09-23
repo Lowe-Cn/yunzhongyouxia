@@ -6,7 +6,7 @@ category: playable-ad
 date: 2026-09-23
 tags: ["试玩广告", "Cocos", "H5"]
 play: "/games/kitchen-rush.html"
-cover: "/images/covers/kitchen-rush.png"
+cover: "/images/covers/kitchen-rush.jpg"
 orientation: portrait
 ---
 
