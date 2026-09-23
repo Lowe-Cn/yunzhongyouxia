@@ -17,6 +17,10 @@ pnpm-debug.log*
 .env
 .env.production
 
+# Alibaba Cloud OSS deploy secrets (copy from oss.config.example)
+oss.config
+tools/ossutil/ossutil.ini
+
 # macOS-specific files
 .DS_Store
 

@@ -1,0 +1,8 @@
+# 复制本文件为 oss.config，填入真实值（oss.config 已加入 .gitignore，不会上传到 Git）
+# 怎么拿 AccessKey：阿里云控制台右上角头像 -> AccessKey 管理 -> 创建 AccessKey
+# 建议用「RAM 子用户」只开 OSS 权限，不要用主账号长期 Key
+
+endpoint=oss-cn-hongkong.aliyuncs.com
+bucket=换成你的桶名
+accessKeyId=换成你的AccessKeyId
+accessKeySecret=换成你的AccessKeySecret

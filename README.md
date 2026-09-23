@@ -106,12 +106,14 @@ play: "/games/my-game.html"
 
 ## 第 4 步：发布到网上（别人也能打开）
 
-推荐用 [Vercel](https://vercel.com)（免费额度够个人站用）：
+**当前推荐（国内访问、未备案）：阿里云香港 OSS**
 
-1. 把这个项目推到 GitHub（或直接用 Vercel 导入本地文件夹）
-2. 在 Vercel 新建项目，框架选 Astro，会自动读到 `vercel.json`
-3. 部署完成后会得到一个类似 `https://xxx.vercel.app` 的链接
-4. 把链接发给别人，就能在浏览器打开、试玩游戏
+1. 双击 `部署-第1步-创建OSS桶.bat`，按窗口说明创建香港 Bucket 并开静态网站
+2. 双击 `部署-第2步-AccessKey.bat`，创建密钥并复制 `oss.config.example` → `oss.config` 填好
+3. 双击 `上传到OSS.bat`（会自动 build 并上传 `dist/`）
+4. 双击 `部署-第3步-绑域名改解析.bat`，绑 `www.yunzhongyouxia.cloud`、开 HTTPS、把 DNS 从 Vercel 改到 OSS
+
+备用：[Vercel](https://vercel.com) 仍可用；解析切走后只是闲置，出问题可回切。
 
 本地先确认能打包成功：
 
