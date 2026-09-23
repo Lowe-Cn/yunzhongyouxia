@@ -106,14 +106,24 @@ play: "/games/my-game.html"
 
 ## 第 4 步：发布到网上（别人也能打开）
 
-**当前推荐（国内访问、未备案）：阿里云香港 OSS**
+**当前托管：阿里云香港 OSS**（桶 `yunzhongyouxia`，域名 `www.yunzhongyouxia.cloud`，未备案）
 
-1. 双击 `部署-第1步-创建OSS桶.bat`，按窗口说明创建香港 Bucket 并开静态网站
-2. 双击 `部署-第2步-AccessKey.bat`，创建密钥并复制 `oss.config.example` → `oss.config` 填好
-3. 双击 `上传到OSS.bat`（会自动 build 并上传 `dist/`）
-4. 双击 `部署-第3步-绑域名改解析.bat`，绑 `www.yunzhongyouxia.cloud`、开 HTTPS、把 DNS 从 Vercel 改到 OSS
+日常更新网站内容：
+
+1. 改代码后双击 `上传到OSS.bat`（自动 build + 上传）
+2. 打开 https://www.yunzhongyouxia.cloud/ 检查
+
+首次开通若还没做完：OSS 控制台给 `www` 域名做「证书托管」（HTTPS）。细节见 `AiHelper/CURRENT.md`。
 
 备用：[Vercel](https://vercel.com) 仍可用；解析切走后只是闲置，出问题可回切。
+
+### 代码推送到哪里
+
+| 场景 | 怎么做 |
+|---|---|
+| 平时开发存档 | 双击 `推送到Gitee.bat`（或 `git push`，默认已跟 Gitee） |
+| 网站内容要同步到 GitHub | 双击 `推送到GitHub.bat` |
+| 真正让国内用户打开最新站 | 双击 `上传到OSS.bat`（和 Git 推送是两件事） |
 
 本地先确认能打包成功：
 
